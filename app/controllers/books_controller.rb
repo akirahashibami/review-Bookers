@@ -4,8 +4,15 @@ class BooksController < ApplicationController
 
   def create
   	@book = Book.new(book_params)
-  	@book.save
-  	redirect_to books_path
+  	# index.htmlに変数を渡すので@bookとなる
+  	# もし保存に成功したならば
+  	if @book.save
+  		# リダイレクトはshowへ notice: メソッドでリダイレクト先にメッセージを表示
+  		redirect_to book_path(@book.id), notice: "successfully created"
+  	else #そうでなければ
+  		@books = Book.all #bookのデータを全部引っ張って
+  		render :index #renderはアクションを介さず通す
+  	end
   end
 
   def index
@@ -21,16 +28,20 @@ class BooksController < ApplicationController
   	@book = Book.find(params[:id])
   end
 
+  # createと同じ
   def update
-  	book = Book.find(params[:id])
-  	book.update(book_params)
-  	redirect_to book_path(book.id)
+  	@book = Book.find(params[:id])
+	if @book.update(book_params)
+  		redirect_to book_path(@book.id), notice: "successfully update"
+  	else
+  		render :edit
+  	end
   end
 
   def destroy
   	book = Book.find(params[:id])
   	book.destroy
-  	redirect_to books_path
+  	redirect_to books_path, notice: "succesfull delete"
   end
 
   private

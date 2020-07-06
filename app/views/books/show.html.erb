@@ -1,3 +1,7 @@
+	<% if flash[:notice] %>
+		<p><%= flash[:notice] %></p>
+	<% end %>
+
 <h4>Title:</h4>
 <p><%= @book.title %></p>
 <h4>Body</h4>

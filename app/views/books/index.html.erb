@@ -1,3 +1,6 @@
+	<% if flash[:notice] %>
+		<p><%= flash[:notice] %></p>
+	<% end %>
 
 <h1>Books</h1>
 <table>
@@ -24,6 +27,17 @@
 <h2>New book</h2>
 
 <%= form_for(@book) do |f| %>
+
+	<!-- もし、エラーが発生した場合の構文 -->
+	<% if @book.errors.any? %>
+		<p><%= @book.errors.count %>errors prohibited this obj from being saved:</p>
+		<ul>
+			<%= @book.errors.full_messages.each do |message| %>
+			<li><%= message %></li>
+			<% end %>
+		</ul>
+	<% end %>
+
 	<p>Title</p>
 	<%= f.text_field :title %>
 	<p>Body</p>
